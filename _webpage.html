@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>I love Anes</title>
+  <style>
+    :root{
+      --bg1:#ffd6e0;
+      --bg2:#ffe6b3;
+      --card:#ffffffcc;
+      --accent:#ff4d6d;
+      --glass: rgba(255,255,255,0.12);
+    }
+    html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial}
+    body{
+      display:flex;align-items:center;justify-content:center;
+      background:linear-gradient(135deg,var(--bg1),var(--bg2));
+      -webkit-font-smoothing:antialiased;
+    }
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,0.85), rgba(255,255,255,0.6));
+      backdrop-filter: blur(6px);
+      border-radius:20px; padding:40px; box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+      text-align:center; max-width:720px; width:92%;
+    }
+    h1{font-size:clamp(28px,6vw,64px); margin:0 0 12px; letter-spacing:1px}
+    p.lead{margin:0 0 18px; font-size:clamp(14px,2.5vw,18px); color:#333}
+    .heart{
+      width:140px;height:140px;margin:18px auto 10px; display:inline-block; transform-origin:center; animation:beat 1s infinite alternate;
+    }
+    @keyframes beat{
+      from{transform:scale(1)}
+      to{transform:scale(1.08)}
+    }
+    .controls{display:flex;gap:10px;justify-content:center;margin-top:14px}
+    button{border:0;padding:10px 14px;border-radius:10px;background:var(--glass);cursor:pointer;font-weight:600}
+    button.primary{background:linear-gradient(90deg,var(--accent),#ff7b9a); color:white}
+    footer{margin-top:18px;font-size:13px;color:#444}
+    .lang-small{font-size:13px;color:#666}
+  </style>
+</head>
+<body>
+  <main class="card" role="main">
+    <!-- Mixed English/French text as requested by user -->
+    <svg class="heart" viewBox="0 0 32 29.6" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M23.6 0c-2.7 0-5.1 1.6-6.1 3.9C16.5 1.6 14.1 0 11.4 0 5.1 0 .6 4.9.6 10.9c0 6.7 6.2 11.2 15.5 18.3l1.4.96 1.4-.96C25.8 22.1 32 17.6 32 10.9 32 4.9 27 0 23.6 0z" fill="url(#g)"/>
+      <defs>
+        <linearGradient id="g" x1="0" x2="1">
+          <stop offset="0" stop-color="#ff7b9a"/>
+          <stop offset="1" stop-color="#ff4d6d"/>
+        </linearGradient>
+      </defs>
+    </svg>
+
+    <h1 id="mainText">I love Anes</h1>
+    <p class="lead lang-small">English &middot; Français — toggle below to switch / basculer ci-dessous</p>
+
+    <div class="controls">
+      <button class="primary" id="btnEN" aria-pressed="true">English</button>
+      <button id="btnFR">Français</button>
+      <button id="btnCopy">Copy text</button>
+    </div>
+
+    <footer>
+      <span id="subText">A little webpage made just for Anes — Une petite page pour Anes.</span>
+    </footer>
+  </main>
+
+  <script>
+    const btnEN = document.getElementById('btnEN');
+    const btnFR = document.getElementById('btnFR');
+    const mainText = document.getElementById('mainText');
+    const subText = document.getElementById('subText');
+    const btnCopy = document.getElementById('btnCopy');
+
+    function setEnglish(){
+      mainText.textContent = 'I love Anes';
+      subText.textContent = 'A little webpage made just for Anes — Une petite page pour Anes.';
+      btnEN.setAttribute('aria-pressed','true');
+      btnFR.removeAttribute('aria-pressed');
+    }
+    function setFrench(){
+      mainText.textContent = "J'aime Anes";
+      subText.textContent = "Une petite page faite juste pour Anes — A little page made just for Anes.";
+      btnFR.setAttribute('aria-pressed','true');
+      btnEN.removeAttribute('aria-pressed');
+    }
+    btnEN.addEventListener('click',setEnglish);
+    btnFR.addEventListener('click',setFrench);
+
+    btnCopy.addEventListener('click', async ()=>{
+      const text = mainText.textContent;
+      try{
+        await navigator.clipboard.writeText(text);
+        btnCopy.textContent = 'Copied!';
+        setTimeout(()=> btnCopy.textContent = 'Copy text',1200);
+      }catch(e){
+        alert('Copy failed — Copie échouée: ' + text);
+      }
+    });
+  </script>
+</body>
+</html>
